@@ -8,7 +8,10 @@
   </head>
   <body>
     <div id="root"></div>
-    <!-- Remove this line 👇 -->
-    <script type="module" src="/src/main.jsx"></script>
+    
+    <!-- Development script (will be removed in production) -->
+    <% if (process.env.NODE_ENV === 'development') { %>
+      <script type="module" src="/src/main.jsx"></script>
+    <% } %>
   </body>
 </html>
