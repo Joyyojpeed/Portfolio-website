@@ -4,14 +4,14 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "lint": "eslint .",
-    "preview": "vite preview"
-  },
+  "dev": "vite",
+  "build": "vite build",
+  "preview": "vite preview",
+  "fix-html": "vite build && cp dist/index.html index.html.tmp && sed -i '' '/<script type=\"module\" src=\"\\/src\\/main.jsx\"><\\/script>/d' index.html.tmp && mv index.html.tmp dist/index.html"
+},
   "dependencies": {
     "aos": "^2.3.4",
-    "framer-motion": "^12.7.3",
+    "framer-motion": "^12.7.3", 
     "gsap": "^3.12.7",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
