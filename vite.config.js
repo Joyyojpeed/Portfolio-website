@@ -1,26 +1,19 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
-import { createHtmlPlugin } from 'vite-plugin-html';
+import { resolve } from 'path';
 
 export default defineConfig({
-  plugins: [
-    react(),
-    createHtmlPlugin({
-      minify: true,
-      inject: {
-        data: {
-          env: process.env.NODE_ENV
-        }
-      }
-    })
-  ],
+  plugins: [react()],
   base: '/',
   build: {
-    manifest: true,
+    outDir: 'dist',
     rollupOptions: {
-      input: './index.html',
+      input: {
+        main: resolve(__dirname, 'index.html') // Absolute path
+      },
       output: {
         entryFileNames: 'assets/[name].[hash].js',
+        chunkFileNames: 'assets/[name].[hash].js',
         assetFileNames: 'assets/[name].[hash].[ext]'
       }
     }
