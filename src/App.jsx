@@ -6,12 +6,14 @@ import Resume from "./pages/Resume";
 import Projects from "./pages/Projects";
 import Contact from "./pages/Contact";
 import Header from "./assets/Header";
+import Footer from "./assets/Footer";
 import TransitionOverlay from "./assets/TransitionOverlay";
 
 function App() {
   const location = useLocation();
   const [showTransition, setShowTransition] = useState(true);
   const [showContent, setShowContent] = useState(false);
+  const [showFooter, setShowFooter] = useState(false); // New state for footer visibility
   const [isDark, setIsDark] = useState(() => {
     const savedTheme = localStorage.getItem("theme");
     if (savedTheme) return savedTheme === "dark";
@@ -53,8 +55,8 @@ function App() {
   const handleTransitionComplete = () => {
     setShowTransition(false);
     setShowContent(true);
+    setShowFooter(true); // Show footer when transition completes
 
-    // Delay to ensure DOM is ready, then restore scroll
     setTimeout(() => {
       window.scrollTo({
         top: scrollPositions.current[location.pathname] || 0,
@@ -63,10 +65,17 @@ function App() {
     }, 10);
   };
 
-  return (
-    <div className={`min-h-screen ${isDark ? 'bg-gray-900' : 'bg-white'}`}>
-      <Header />
+  useEffect(() => {
+    // Hide footer during transitions
+    if (showTransition) {
+      setShowFooter(false);
+    }
+  }, [showTransition]);
 
+  return (
+    <div className={`min-h-screen flex flex-col ${isDark ? 'bg-gray-900' : 'bg-white'}`}>
+      <Header />
+      
       {showTransition && (
         <TransitionOverlay 
           onComplete={handleTransitionComplete} 
@@ -74,25 +83,29 @@ function App() {
         />
       )}
 
-      <AnimatePresence mode="wait">
-        {showContent && (
-          <motion.div
-            key={location.pathname}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.5 }}
-            className="pt-20"
-          >
-            <Routes location={location}>
-              <Route path="/" element={<Home />} />
-              <Route path="/resume" element={<Resume />} />
-              <Route path="/projects" element={<Projects />} />
-              <Route path="/contact" element={<Contact />} />
-            </Routes>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      <main className="flex-grow">
+        <AnimatePresence mode="wait">
+          {showContent && (
+            <motion.div
+              key={location.pathname}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.5 }}
+              className="pt-20"
+            >
+              <Routes location={location}>
+                <Route path="/" element={<Home />} />
+                <Route path="/resume" element={<Resume />} />
+                <Route path="/projects" element={<Projects />} />
+                <Route path="/contact" element={<Contact />} />
+              </Routes>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </main>
+
+      <Footer visible={showFooter} />
     </div>
   );
 }

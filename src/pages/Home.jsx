@@ -20,7 +20,7 @@ export default function Home() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isDeleting, setIsDeleting] = useState(false);
   const [showCursor, setShowCursor] = useState(true);
-  const typingSpeed = isDeleting ? 75 : 150; // Faster deletion
+  const typingSpeed = isDeleting ? 75 : 150; 
 
   // Cursor blink animation
   useEffect(() => {
@@ -93,8 +93,8 @@ export default function Home() {
 
   const downloadCV = () => {
     const link = document.createElement('a');
-    link.href = '/joydeep_sen_cv.pdf';
-    link.download = 'Joydeep_Sen_Frontend_Developer_CV.pdf';
+    link.href = './joydeep_sen_cv.pdf';
+    link.download = 'Joydeep_Sen_CV.pdf';
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -162,7 +162,7 @@ export default function Home() {
             </motion.button>
             <div className="flex space-x-3 items-center">
               <motion.a
-                href="https://www.linkedin.com"
+                href="https://www.linkedin.com/in/joydeep-sen-518a38232/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 transition-colors ml-3"
@@ -174,7 +174,7 @@ export default function Home() {
               </motion.a>
               
               <motion.a
-                href="https://github.com"
+                href="https://github.com/Joyyojpeed"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 transition-colors"
@@ -222,7 +222,7 @@ export default function Home() {
             }}
           >
             <motion.img
-              src="/GOO.png"
+              src="./images/Profile.jpg"
               alt="Your Photo"
               className="w-full h-full object-cover"
               initial={{ scale: 1.1 }}

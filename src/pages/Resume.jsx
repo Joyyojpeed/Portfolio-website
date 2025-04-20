@@ -68,13 +68,13 @@ export default function Resume() {
 
   const aboutMe = [
     { label: "Name", value: "Joydeep Sen" },
-    { label: "Experience", value: "5 Years" },
+    { label: "Experience", value: "Skillfully-Fresher" },
     { label: "Nationality", value: "Indian" },
-    { label: "Phone", value: "+91 1234567890" },
-    { label: "Email", value: "joydeep@example.com" },
-    { label: "Languages", value: "English, Hindi" },
+    { label: "Phone", value: "+91 7596923557" },
+    { label: "Email", value: "jds472016@gmail.com" },
+    { label: "Languages", value: "English, Hindi, Bengali" },
     { label: "Freelance", value: "Available" },
-    { label: "GitHub", value: "github.com/joydeepsen" },
+    { label: "GitHub", value: "https://github.com/Joyyojpeed" },
   ];
 
  // Resume.jsx

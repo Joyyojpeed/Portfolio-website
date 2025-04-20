@@ -50,7 +50,7 @@ const Projects = () => {
         damping: 20,
         duration: 0.5
       }}
-      className="w-full flex justify-center pt-8 px-6" // Reduced top padding
+      className="w-full flex justify-center pt-8 px-6 pb-16" // Reduced top padding
     >
       <div className="max-w-[1100px] w-full flex flex-col lg:flex-row justify-between gap-6">
         {/* Left Section - Moved up */}

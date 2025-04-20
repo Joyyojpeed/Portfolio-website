@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Sun, Moon, Menu } from "react-feather";
+import { Sun, Moon, Menu, X } from "react-feather";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "react-router-dom";
 
@@ -38,6 +38,7 @@ export default function Header() {
     setTimeout(() => {
       setIsDark(!isDark);
       setRipple(false);
+      setMenuOpen(false);
     }, 300);
   };
 
@@ -87,6 +88,15 @@ export default function Header() {
             ))}
           </nav>
 
+          {/* Glowing Hire Me Button - Desktop */}
+          <Link
+            to="/contact"
+            className="relative px-6 py-2 bg-gradient-to-r from-blue-500 to-blue-600 text-white font-medium rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105"
+          >
+            <span className="relative z-10">Hire Me</span>
+            <span className="absolute inset-0 rounded-full bg-gradient-to-r from-blue-500 to-blue-600 opacity-0 hover:opacity-100 animate-pulse blur-sm transition-opacity duration-300"></span>
+          </Link>
+
           <button
             onClick={toggleTheme}
             className="ml-4 p-2 rounded-full bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-200 shadow-md hover:scale-105 transition-transform"
@@ -104,13 +114,42 @@ export default function Header() {
           </button>
         </div>
 
-        <div className="md:hidden flex items-center">
+        <div className="md:hidden flex items-center gap-4">
+          {/* Glowing Hire Me Button - Mobile */}
+          <Link
+            to="/contact"
+            className="relative px-4 py-2 bg-gradient-to-r from-blue-500 to-blue-600 text-white text-sm font-medium rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105"
+          >
+            <span className="relative z-10">Hire Me</span>
+            <span className="absolute inset-0 rounded-full bg-gradient-to-r from-blue-500 to-blue-600 opacity-0 hover:opacity-100 animate-pulse blur-sm transition-opacity duration-300"></span>
+          </Link>
+
           <button
-            className="text-gray-800 dark:text-gray-200"
+            onClick={toggleTheme}
+            className="p-2 rounded-full bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-200 shadow-md"
+            aria-label="Toggle theme"
+          >
+            <motion.div
+              key={isDark ? "sun-mobile" : "moon-mobile"}
+              initial={{ rotate: -90, opacity: 0 }}
+              animate={{ rotate: 0, opacity: 1 }}
+              exit={{ rotate: 90, opacity: 0 }}
+              transition={{ duration: 0.4 }}
+            >
+              {isDark ? <Sun size={20} /> : <Moon size={20} />}
+            </motion.div>
+          </button>
+          
+          <button
+            className="text-gray-800 dark:text-gray-200 p-1"
             onClick={() => setMenuOpen(!menuOpen)}
             aria-label="Menu"
           >
-            <Menu size={32} />
+            {menuOpen ? (
+              <X size={28} className="text-blue-600 dark:text-blue-400" />
+            ) : (
+              <Menu size={28} />
+            )}
           </button>
         </div>
       </div>
@@ -118,40 +157,72 @@ export default function Header() {
       <AnimatePresence>
         {menuOpen && (
           <motion.nav
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
+            initial={{ opacity: 0, y: -20, height: 0 }}
+            animate={{ 
+              opacity: 1, 
+              y: 0,
+              height: "auto"
+            }}
+            exit={{ 
+              opacity: 0, 
+              y: -20,
+              height: 0,
+              transition: { duration: 0.3 }
+            }}
+            transition={{ 
+              type: "spring",
+              damping: 25,
+              stiffness: 200
+            }}
             className={`absolute top-full left-0 w-full ${
               isDark ? "bg-gray-800" : "bg-white"
-            } px-6 py-4 space-y-4 shadow-lg z-40`}
+            } overflow-hidden shadow-lg z-40`}
           >
-            {["/", "/resume", "/projects", "/contact"].map((path, idx) => (
-              <Link
-                key={path}
-                to={path}
-                onClick={() => setMenuOpen(false)}
-                className="block text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 py-2 transition duration-300"
-              >
-                {["Home", "Resume", "Projects", "Contact"][idx]}
-              </Link>
-            ))}
-
-            <div className="pt-4 border-t border-gray-300 dark:border-gray-700">
-              <button
-                onClick={toggleTheme}
-                className="w-full p-2 rounded-full bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-200 shadow-md flex items-center justify-center"
-                aria-label="Toggle theme"
-              >
+            <div className="px-6 py-4 space-y-4">
+              {["/", "/resume", "/projects", "/contact"].map((path, idx) => (
                 <motion.div
-                  key={isDark ? "sun-mobile" : "moon-mobile"}
-                  initial={{ rotate: -90, opacity: 0 }}
-                  animate={{ rotate: 0, opacity: 1 }}
-                  exit={{ rotate: 90, opacity: 0 }}
-                  transition={{ duration: 0.4 }}
+                  key={path}
+                  initial={{ x: -20, opacity: 0 }}
+                  animate={{ x: 0, opacity: 1 }}
+                  transition={{ delay: 0.1 + idx * 0.05 }}
                 >
-                  {isDark ? <Sun size={20} /> : <Moon size={20} />}
+                  <Link
+                    to={path}
+                    onClick={() => setMenuOpen(false)}
+                    className="block py-3 px-4 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-blue-100 dark:hover:bg-gray-700 transition-colors duration-200 font-medium"
+                  >
+                    {["Home", "Resume", "Projects", "Contact"][idx]}
+                  </Link>
                 </motion.div>
-              </button>
+              ))}
+
+              <motion.div 
+                className="pt-4 mt-4 border-t border-gray-300 dark:border-gray-700"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.3 }}
+              >
+                <div className="px-4 text-sm text-gray-500 dark:text-gray-400 mb-2">
+                  Switch Theme
+                </div>
+                <button
+                  onClick={toggleTheme}
+                  className="w-full p-3 rounded-lg bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-200 flex items-center justify-center gap-2 font-medium"
+                  aria-label="Toggle theme"
+                >
+                  {isDark ? (
+                    <>
+                      <Sun size={18} />
+                      <span>Light Mode</span>
+                    </>
+                  ) : (
+                    <>
+                      <Moon size={18} />
+                      <span>Dark Mode</span>
+                    </>
+                  )}
+                </button>
+              </motion.div>
             </div>
           </motion.nav>
         )}

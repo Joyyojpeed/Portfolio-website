@@ -64,7 +64,7 @@ export default function Contact() {
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -30 }}
       transition={{ type: "spring", stiffness: 100, damping: 20 }}
-      className="min-h-[calc(100vh-80px)] px-6 pt-8 bg-white dark:bg-gray-900 text-black dark:text-white"
+      className="min-h-[calc(100vh-80px)] px-6 pt-8 pb-16 bg-white dark:bg-gray-900 text-black dark:text-white"
     >
       <div className="max-w-5xl mx-auto">
         <div className="flex flex-col lg:flex-row gap-8">
