@@ -5,16 +5,21 @@ import { resolve } from 'path';
 export default defineConfig({
   plugins: [react()],
   base: '/',
+  publicDir: 'public', // Explicitly declare public directory
   build: {
     outDir: 'dist',
+    assetsInlineLimit: 0, // Ensure files aren't inlined
     rollupOptions: {
       input: {
-        main: resolve(__dirname, 'index.html') // Absolute path
+        main: resolve(__dirname, 'index.html')
       },
       output: {
-        entryFileNames: 'assets/[name].[hash].js',
-        chunkFileNames: 'assets/[name].[hash].js',
-        assetFileNames: 'assets/[name].[hash].[ext]'
+        assetFileNames: ({name}) => {
+          if (/\.(jpg|jpeg|png|gif|svg|pdf)$/.test(name ?? '')) {
+            return 'assets/[name].[hash][extname]';
+          }
+          return 'assets/[name].[hash][extname]';
+        }
       }
     }
   }
