@@ -93,7 +93,7 @@ export default function Home() {
 
   const downloadCV = () => {
     const link = document.createElement('a');
-    link.href = './joydeep_sen_cv.pdf';
+    link.href = '/joydeep_sen_cv.pdf';
     link.download = 'Joydeep_Sen_CV.pdf';
     document.body.appendChild(link);
     link.click();
@@ -222,7 +222,7 @@ export default function Home() {
             }}
           >
             <motion.img
-              src="./images/Profile.jpg"
+              src="/images/Profile.jpg"
               alt="Your Photo"
               className="w-full h-full object-cover"
               initial={{ scale: 1.1 }}
