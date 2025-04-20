@@ -12,25 +12,22 @@
   ],
   "routes": [
     {
-      "src": "/assets/(.*)",
+      "src": "/assets/.+",
       "headers": {
         "Cache-Control": "public, max-age=31536000, immutable"
       }
     },
     {
-      "src": "/images/(.*)",
+      "src": "/images/.+",
       "dest": "/public/images/$1"
     },
     {
-      "src": "/(.*\.(jpg|jpeg|png|gif|svg|pdf))",
+      "src": "/(.*\\.(jpg|jpeg|png|gif|svg|pdf))",
       "dest": "/public/$1"
     },
     {
-      "src": "/(.*)",
-      "dest": "/index.html",
-      "headers": {
-        "Cache-Control": "no-cache"
-      }
+      "src": "/.*",
+      "dest": "/index.html"
     }
   ]
 }
