@@ -3,11 +3,11 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-"scripts": {
+ "scripts": {
   "dev": "vite",
-  "build": "vite build && cp public/ResumeJoydeep.pdf dist/",
+  "build": "vite build && cp -r public/* dist/",
   "preview": "vite preview",
-  "vercel-build": "vite build && cp public/ResumeJoydeep.pdf dist/"
+  "vercel-build": "vite build && cp -r public/* dist/"
 },
   "dependencies": {
     "aos": "^2.3.4",

@@ -91,30 +91,13 @@ export default function Home() {
     return () => cancelAnimationFrame(animationFrame);
   }, []);
 
-  const downloadCV = async () => {
-    try {
-      const pdfUrl = `/ResumeJoydeep.pdf?t=${Date.now()}`;
-      
-      // First verify the file exists
-      const response = await fetch(pdfUrl);
-      if (!response.ok) throw new Error('File not found');
-      
-      // Create download link
-      const link = document.createElement('a');
-      link.href = pdfUrl;
-      link.download = 'Joydeep_Sen_Resume.pdf'; // Custom download filename
-      document.body.appendChild(link);
-      link.click();
-      
-      // Clean up
-      setTimeout(() => {
-        document.body.removeChild(link);
-      }, 100);
-  
-    } catch (error) {
-      console.error('Download failed:', error);
-      alert('Failed to download resume. Please contact me directly at jds472016@gmail.com');
-    }
+  const downloadCV = () => {
+    const link = document.createElement('a');
+    link.href = '/ResumeJoydeep.pdf'; 
+    link.download = 'Joydeep_Sen_CV.pdf';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
   };
 
   return (
