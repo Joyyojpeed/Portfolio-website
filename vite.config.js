@@ -1,6 +1,5 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
-import { resolve } from 'path';
 
 export default defineConfig({
   plugins: [react()],
@@ -10,17 +9,14 @@ export default defineConfig({
     outDir: 'dist',
     assetsInlineLimit: 0,
     rollupOptions: {
-      input: {
-        main: resolve(__dirname, 'index.html')
-      },
       output: {
-        assetFileNames: 'assets/[name].[hash][extname]'
+        assetFileNames: (assetInfo) => {
+          if (assetInfo.name === 'ResumeJoydeep.pdf') {
+            return '[name][extname]'; // Keep original filename
+          }
+          return 'assets/[name].[hash][extname]';
+        }
       }
-    }
-  },
-  server: {
-    fs: {
-      strict: false
     }
   }
 });
