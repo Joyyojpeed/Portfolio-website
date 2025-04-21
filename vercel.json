@@ -11,21 +11,25 @@
   ],
   "routes": [
     {
-      "src": "/assets/.+",
+      "src": "/joydeep_sen_cv.pdf",
+      "headers": {
+        "Content-Type": "application/pdf",
+        "Content-Disposition": "attachment; filename=\"Joydeep_Sen_Resume.pdf\"",
+        "Cache-Control": "no-cache"
+      }
+    },
+    {
+      "src": "/images/(.*)",
+      "dest": "/images/$1"
+    },
+    {
+      "src": "/assets/(.*)",
       "headers": {
         "Cache-Control": "public, max-age=31536000, immutable"
       }
     },
     {
-      "src": "/images/.+",
-      "dest": "/public/images/$1"
-    },
-    {
-      "src": "/(.*\\.(jpg|jpeg|png|gif|svg|pdf))",
-      "dest": "/public/$1"
-    },
-    {
-      "src": "/.*",
+      "src": "/(.*)",
       "dest": "/index.html"
     }
   ]

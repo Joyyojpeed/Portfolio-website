@@ -5,22 +5,22 @@ import { resolve } from 'path';
 export default defineConfig({
   plugins: [react()],
   base: '/',
-  publicDir: 'public', // Explicitly declare public directory
+  publicDir: 'public',
   build: {
     outDir: 'dist',
-    assetsInlineLimit: 0, // Ensure files aren't inlined
+    assetsInlineLimit: 0,
     rollupOptions: {
       input: {
         main: resolve(__dirname, 'index.html')
       },
       output: {
-        assetFileNames: ({name}) => {
-          if (/\.(jpg|jpeg|png|gif|svg|pdf)$/.test(name ?? '')) {
-            return 'assets/[name].[hash][extname]';
-          }
-          return 'assets/[name].[hash][extname]';
-        }
+        assetFileNames: 'assets/[name].[hash][extname]'
       }
+    }
+  },
+  server: {
+    fs: {
+      strict: false
     }
   }
 });

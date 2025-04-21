@@ -91,13 +91,35 @@ export default function Home() {
     return () => cancelAnimationFrame(animationFrame);
   }, []);
 
-  const downloadCV = () => {
-    const link = document.createElement('a');
-    link.href = '/joydeep_sen_cv.pdf';
-    link.download = 'Joydeep_Sen_CV.pdf';
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+  const downloadCV = async () => {
+    try {
+      // Add cache busting parameter
+      const pdfUrl = `/joydeep_sen_cv.pdf?t=${Date.now()}`;
+      
+      // Verify file exists first
+      const response = await fetch(pdfUrl);
+      if (!response.ok) throw new Error('File not found');
+      
+      // Create download link
+      const link = document.createElement('a');
+      link.href = pdfUrl;
+      link.download = 'Joydeep_Sen_Resume.pdf';
+      link.target = '_blank';
+      link.rel = 'noopener noreferrer';
+      
+      // Trigger download
+      document.body.appendChild(link);
+      link.click();
+      
+      // Clean up
+      setTimeout(() => {
+        document.body.removeChild(link);
+      }, 100);
+      
+    } catch (error) {
+      console.error('Download failed:', error);
+      alert('Failed to download resume. Please try again or contact me directly.');
+    }
   };
 
   return (
