@@ -114,44 +114,32 @@ export default function Header() {
           </button>
         </div>
 
-        <div className="md:hidden flex items-center gap-4">
-          {/* Glowing Hire Me Button - Mobile */}
-          <Link
-            to="/contact"
-            className="relative px-4 py-2 bg-gradient-to-r from-blue-500 to-blue-600 text-white text-sm font-medium rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105"
-          >
-            <span className="relative z-10">Hire Me</span>
-            <span className="absolute inset-0 rounded-full bg-gradient-to-r from-blue-500 to-blue-600 opacity-0 hover:opacity-100 animate-pulse blur-sm transition-opacity duration-300"></span>
-          </Link>
+        
 
-          <button
-            onClick={toggleTheme}
-            className="p-2 rounded-full bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-200 shadow-md"
-            aria-label="Toggle theme"
-          >
-            <motion.div
-              key={isDark ? "sun-mobile" : "moon-mobile"}
-              initial={{ rotate: -90, opacity: 0 }}
-              animate={{ rotate: 0, opacity: 1 }}
-              exit={{ rotate: 90, opacity: 0 }}
-              transition={{ duration: 0.4 }}
-            >
-              {isDark ? <Sun size={20} /> : <Moon size={20} />}
-            </motion.div>
-          </button>
-          
-          <button
-            className="text-gray-800 dark:text-gray-200 p-1"
-            onClick={() => setMenuOpen(!menuOpen)}
-            aria-label="Menu"
-          >
-            {menuOpen ? (
-              <X size={28} className="text-blue-600 dark:text-blue-400" />
-            ) : (
-              <Menu size={28} />
-            )}
-          </button>
-        </div>
+<div className="md:hidden flex items-center gap-4">
+  {/* Glowing Hire Me Button - Mobile */}
+  <Link
+    to="/contact"
+    className="relative px-4 py-2 bg-gradient-to-r from-blue-500 to-blue-600 text-white text-sm font-medium rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105"
+  >
+    <span className="relative z-10">Hire Me</span>
+    <span className="absolute inset-0 rounded-full bg-gradient-to-r from-blue-500 to-blue-600 opacity-0 hover:opacity-100 animate-pulse blur-sm transition-opacity duration-300"></span>
+  </Link>
+  
+  {/* Remove the theme toggle button from here */}
+  
+  <button
+    className="text-gray-800 dark:text-gray-200 p-1"
+    onClick={() => setMenuOpen(!menuOpen)}
+    aria-label="Menu"
+  >
+    {menuOpen ? (
+      <X size={28} className="text-blue-600 dark:text-blue-400" />
+    ) : (
+      <Menu size={28} />
+    )}
+  </button>
+</div>
       </div>
 
       <AnimatePresence>

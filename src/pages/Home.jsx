@@ -4,7 +4,6 @@ import { GitHub, Instagram } from "react-feather";
 import { Linkedin as LinkedIn } from "react-feather";
 
 export default function Home() {
-  // Experience counters state
   const [loading, setLoading] = useState(true);
   const experienceData = [
     { value: 5, label: "years of experience" },
@@ -14,15 +13,13 @@ export default function Home() {
   ];
   const [counts, setCounts] = useState(experienceData.map(() => 0));
 
-  // Typewriter effect state
   const [displayedName, setDisplayedName] = useState("");
   const fullName = "Joydeep Sen.";
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isDeleting, setIsDeleting] = useState(false);
   const [showCursor, setShowCursor] = useState(true);
-  const typingSpeed = isDeleting ? 75 : 150; 
+  const typingSpeed = isDeleting ? 75 : 150;
 
-  // Cursor blink animation
   useEffect(() => {
     const blinkInterval = setInterval(() => {
       setShowCursor(prev => !prev);
@@ -30,34 +27,28 @@ export default function Home() {
     return () => clearInterval(blinkInterval);
   }, []);
 
-  // Typewriter animation
   useEffect(() => {
     let timeout;
 
     if (!isDeleting && currentIndex < fullName.length) {
-      // Typing forward
       timeout = setTimeout(() => {
         setDisplayedName(prev => prev + fullName[currentIndex]);
         setCurrentIndex(prev => prev + 1);
       }, typingSpeed);
     } else if (isDeleting && currentIndex > 0) {
-      // Deleting backward
       timeout = setTimeout(() => {
         setDisplayedName(prev => prev.slice(0, -1));
         setCurrentIndex(prev => prev - 1);
       }, typingSpeed);
     } else if (currentIndex === fullName.length) {
-      // Switch to deleting after pause
       timeout = setTimeout(() => setIsDeleting(true), 1500);
     } else if (currentIndex === 0) {
-      // Switch back to typing after pause
       timeout = setTimeout(() => setIsDeleting(false), 1000);
     }
 
     return () => clearTimeout(timeout);
   }, [currentIndex, isDeleting, typingSpeed]);
 
-  // Experience counters animation
   useEffect(() => {
     const calculateDuration = (value) => {
       return 2000 + (6000 - 2000) * (value / 100);
@@ -70,7 +61,7 @@ export default function Home() {
 
     const animateCounters = () => {
       const elapsed = Date.now() - startTime;
-      
+
       setCounts(prevCounts => {
         return prevCounts.map((_, index) => {
           const item = experienceData[index];
@@ -93,7 +84,7 @@ export default function Home() {
 
   const downloadCV = () => {
     const link = document.createElement('a');
-    link.href = '/ResumeJoydeep.pdf'; 
+    link.href = '/ResumeJoydeep.pdf';
     link.download = 'Joydeep_Sen_CV.pdf';
     document.body.appendChild(link);
     link.click();
@@ -120,26 +111,26 @@ export default function Home() {
             Hello, I'm
           </motion.h1>
 
-          {/* Typewriter Name */}
-<div className="relative inline-block">
-  <motion.h2
-    className="text-5xl sm:text-6xl lg:text-7xl font-extrabold text-blue-600 dark:text-blue-400 mt-1 inline-flex items-center"
-    initial={{ opacity: 0 }}
-    animate={{ opacity: 1 }}
-    transition={{ duration: 1, delay: 0.2 }}
-  >
-    {displayedName}
-    <span 
-      className={`inline-block ml-1 h-12 sm:h-14 lg:h-16 w-1 bg-blue-600 dark:bg-blue-400 ${
-        showCursor ? 'opacity-100' : 'opacity-0'
-      }`}
-      style={{
-        transition: 'opacity 0.1s ease',
-        alignSelf: 'center' 
-      }}
-    />
-  </motion.h2>
-</div>
+          {/* Typewriter Effect Wrapper with Fixed Height on Mobile */}
+          <div className="relative inline-block h-[72px] sm:h-auto">
+            <motion.h2
+              className="text-5xl sm:text-6xl lg:text-7xl font-extrabold text-blue-600 dark:text-blue-400 mt-1 inline-flex items-center"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 1, delay: 0.2 }}
+            >
+              {displayedName}
+              <span
+                className={`inline-block ml-1 h-12 sm:h-14 lg:h-16 w-1 bg-blue-600 dark:bg-blue-400 ${
+                  showCursor ? 'opacity-100' : 'opacity-0'
+                }`}
+                style={{
+                  transition: 'opacity 0.1s ease',
+                  alignSelf: 'center'
+                }}
+              />
+            </motion.h2>
+          </div>
 
           <motion.p
             className="mt-12 text-lg sm:text-xl text-gray-600 dark:text-gray-300"
@@ -172,7 +163,7 @@ export default function Home() {
               >
                 <LinkedIn size={30} />
               </motion.a>
-              
+
               <motion.a
                 href="https://github.com/Joyyojpeed"
                 target="_blank"
@@ -184,7 +175,7 @@ export default function Home() {
               >
                 <GitHub size={30} />
               </motion.a>
-              
+
               <motion.a
                 href="https://www.instagram.com"
                 target="_blank"
@@ -205,14 +196,14 @@ export default function Home() {
           <motion.div
             className="relative rounded-full w-[90%] sm:w-[80%] max-w-xs aspect-square overflow-hidden shadow-2xl"
             initial={{ opacity: 0, y: 50, rotate: -5 }}
-            animate={{ 
-              opacity: 1, 
-              y: 0, 
+            animate={{
+              opacity: 1,
+              y: 0,
               rotate: 0,
               boxShadow: "0 25px 50px -12px rgba(0, 0, 255, 0.25)"
             }}
-            transition={{ 
-              duration: 1.5, 
+            transition={{
+              duration: 1.5,
               delay: 0.8,
               rotate: {
                 type: "spring",
@@ -229,7 +220,7 @@ export default function Home() {
               animate={{ scale: 1 }}
               transition={{ duration: 1.5, delay: 0.8 }}
             />
-            <motion.div 
+            <motion.div
               className="absolute inset-0 rounded-full border-4 border-blue-400 opacity-0"
               animate={{
                 opacity: [0, 0.3, 0],
@@ -248,25 +239,25 @@ export default function Home() {
 
       {/* Experience Section */}
       <div className="mt-14 w-full max-w-7xl">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-          {experienceData.map((item, index) => (
-            <motion.div
-              key={index}
-              className="flex items-center gap-2 p-3 bg-gray-100 dark:bg-gray-800 rounded-xl shadow-md min-h-[70px]"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 1, delay: 1.5 + index * 0.2 }}
-            >
-              <div className="text-4xl font-bold text-blue-700 dark:text-blue-500">
-                {Math.floor(counts[index])}+
-              </div>
-              <div className="text-xs text-gray-600 dark:text-gray-300">
-                {item.label}
-              </div>
-            </motion.div>
-          ))}
+  <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+    {experienceData.map((item, index) => (
+      <motion.div
+        key={index}
+        className="flex items-center gap-2 p-3 bg-transparent rounded-xl md:shadow-md min-h-[70px] md:bg-gray-100 dark:md:bg-gray-800"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 1, delay: 1.5 + index * 0.2 }}
+      >
+        <div className="text-4xl font-bold text-blue-700 dark:text-blue-500">
+          {Math.floor(counts[index])}+
         </div>
-      </div>
+        <div className="text-xs text-gray-600 dark:text-gray-300">
+          {item.label}
+        </div>
+      </motion.div>
+    ))}
+  </div>
+</div>
     </motion.div>
   );
 }
