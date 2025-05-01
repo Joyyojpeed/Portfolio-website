@@ -18,12 +18,12 @@ const projectData = [
     id: 2,
     serial: "02",
     category: "Full Stack Project",
-    name: "Fooderu",
-    description: "Food ordering platform with multi-user functionality and real-time menu management.",
+    name: "Fooderuu",
+    description: "Food ordering platform with multi-user functionality real-time menu management, payment integration with robust user authentication.",
     techStack: "Next.js, React, MongoDB Atlas, Tailwind CSS, AWS, RazorPay Gateway",
-    image: "",
-    github: "https://github.com/your-taskmanager",
-    live: "https://your-taskmanager.com",
+    image: "/images/FooderuuImage.png",
+    github: "https://github.com/Joyyojpeed/Fooderuu",
+    live: "https://fooderuu.vercel.app/",
   },
 ];
 
@@ -109,27 +109,35 @@ const Projects = () => {
         </div>
 
         {/* Right Section - Moved up and closer */}
-        <div className="lg:w-1/2 w-full flex flex-col items-center lg:items-end mt-0"> {/* Removed top margin */}
-          <div className="w-[250px] h-[250px] sm:w-[300px] sm:h-[300px] lg:w-[400px] lg:h-[400px] bg-gray-100 dark:bg-gray-800 rounded-xl flex items-center justify-center relative">
-            <span className="text-gray-400 dark:text-gray-600 text-sm">Project Image</span>
-          </div>
-          
-          {/* Desktop Navigation Arrows - Moved up */}
-          <div className="hidden lg:flex gap-4 mt-2"> {/* Reduced top margin */}
-            <button
-              onClick={handlePrev}
-              className="p-3 bg-gray-200 dark:bg-gray-700 rounded-full hover:bg-gray-300 dark:hover:bg-gray-600 transition"
-            >
-              <FiArrowLeft className="text-xl text-gray-800 dark:text-white" />
-            </button>
-            <button
-              onClick={handleNext}
-              className="p-3 bg-gray-200 dark:bg-gray-700 rounded-full hover:bg-gray-300 dark:hover:bg-gray-600 transition"
-            >
-              <FiArrowRight className="text-xl text-gray-800 dark:text-white" />
-            </button>
-          </div>
-        </div>
+        <div className="lg:w-1/2 w-full flex flex-col items-center lg:items-end mt-0">
+  <div className="w-[250px] h-[250px] sm:w-[300px] sm:h-[300px] lg:w-[400px] lg:h-[400px] bg-gray-100 dark:bg-gray-800 rounded-xl flex items-center justify-center relative overflow-hidden">
+    {project.image ? (
+      <img 
+        src={project.image} 
+        alt={project.name}
+        className="w-full h-full object-cover"
+      />
+    ) : (
+      <span className="text-gray-400 dark:text-gray-600 text-sm">Project Image</span>
+    )}
+  </div>
+  
+  {/* Desktop Navigation Arrows - Moved up */}
+  <div className="hidden lg:flex gap-4 mt-2">
+    <button
+      onClick={handlePrev}
+      className="p-3 bg-gray-200 dark:bg-gray-700 rounded-full hover:bg-gray-300 dark:hover:bg-gray-600 transition"
+    >
+      <FiArrowLeft className="text-xl text-gray-800 dark:text-white" />
+    </button>
+    <button
+      onClick={handleNext}
+      className="p-3 bg-gray-200 dark:bg-gray-700 rounded-full hover:bg-gray-300 dark:hover:bg-gray-600 transition"
+    >
+      <FiArrowRight className="text-xl text-gray-800 dark:text-white" />
+    </button>
+  </div>
+</div>
       </div>
     </motion.div>
   );

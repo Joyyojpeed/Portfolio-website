@@ -138,7 +138,39 @@ export default function Home() {
             animate={{ opacity: 1 }}
             transition={{ duration: 1.2, delay: 0.3 }}
           >
-            A passionate developer with a keen interest in web technologies.
+            A passionate developer with a keen interest in web technologies. Check out my projects{' '}
+            <motion.a
+              href="/Projects"
+              className="relative inline-block font-semibold"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              <span className="relative z-10 text-blue-600 dark:text-blue-400">HERE</span>
+              {/* Glow effect */}
+              <motion.span
+                className="absolute inset-0 bg-blue-400 rounded-full blur-md opacity-0"
+                initial={{ scale: 0.8, opacity: 0 }}
+                animate={{
+                  scale: [1, 1.2, 1],
+                  opacity: [0, 0.3, 0],
+                }}
+                transition={{
+                  duration: 2,
+                  repeat: Infinity,
+                  repeatDelay: 1,
+                }}
+              />
+              {/* Hover effects */}
+              <motion.span
+                className="absolute inset-0 bg-blue-100 dark:bg-blue-900 rounded-full opacity-0"
+                whileHover={{ 
+                  scale: 1.2, 
+                  opacity: 0.4,
+                  transition: { duration: 0.3 }
+                }}
+              />
+            </motion.a>
+            !
           </motion.p>
 
           <div className="mt-6 flex flex-col sm:flex-row items-center gap-3">
@@ -239,25 +271,25 @@ export default function Home() {
 
       {/* Experience Section */}
       <div className="mt-14 w-full max-w-7xl">
-  <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-    {experienceData.map((item, index) => (
-      <motion.div
-        key={index}
-        className="flex items-center gap-2 p-3 bg-transparent rounded-xl md:shadow-md min-h-[70px] md:bg-gray-100 dark:md:bg-gray-800"
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 1, delay: 1.5 + index * 0.2 }}
-      >
-        <div className="text-4xl font-bold text-blue-700 dark:text-blue-500">
-          {Math.floor(counts[index])}+
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+          {experienceData.map((item, index) => (
+            <motion.div
+              key={index}
+              className="flex items-center gap-2 p-3 bg-transparent rounded-xl md:shadow-md min-h-[70px] md:bg-gray-100 dark:md:bg-gray-800"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 1, delay: 1.5 + index * 0.2 }}
+            >
+              <div className="text-4xl font-bold text-blue-700 dark:text-blue-500">
+                {Math.floor(counts[index])}+
+              </div>
+              <div className="text-xs text-gray-600 dark:text-gray-300">
+                {item.label}
+              </div>
+            </motion.div>
+          ))}
         </div>
-        <div className="text-xs text-gray-600 dark:text-gray-300">
-          {item.label}
-        </div>
-      </motion.div>
-    ))}
-  </div>
-</div>
+      </div>
     </motion.div>
   );
 }
