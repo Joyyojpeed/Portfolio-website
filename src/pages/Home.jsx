@@ -6,10 +6,10 @@ import { Linkedin as LinkedIn } from "react-feather";
 export default function Home() {
   const [loading, setLoading] = useState(true);
   const experienceData = [
-    { value: 5, label: "years of experience" },
+    { value: 1, label: "years of experience" },
     { value: 10, label: "projects completed" },
     { value: 3, label: "tech stacks" },
-    { value: 100, label: "cups of coffee" },
+    { value: 30, label: "cups of coffee" },
   ];
   const [counts, setCounts] = useState(experienceData.map(() => 0));
 
@@ -84,7 +84,7 @@ export default function Home() {
 
   const downloadCV = () => {
     const link = document.createElement('a');
-    link.href = '/ResumeJoydeep.pdf';
+    link.href = '/ResumeJoydeep1.pdf';
     link.download = 'Joydeep_Sen_CV.pdf';
     document.body.appendChild(link);
     link.click();
