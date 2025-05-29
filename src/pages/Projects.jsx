@@ -10,9 +10,9 @@ const projectData = [
     name: "Portfolio Website",
     description: "A sleek and responsive portfolio showcasing animation, interactivity, and modern tech.",
     techStack: "React, Tailwind CSS, Framer Motion, GSAP",
-    image: "",
-    github: "https://github.com/your-repo",
-    live: "https://your-live-project.com",
+    image: "/images/Frontend.png",
+    github: "https://github.com/Joyyojpeed/Portfolio-website",
+    live: "https://jsen.vercel.app/",
   },
   {
     id: 2,
