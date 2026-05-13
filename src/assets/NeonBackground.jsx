@@ -361,10 +361,36 @@ export default function NeonBackground({ isDark, elevated }) {
     };
     animate();
 
+    const onContextLost = (event) => {
+      event.preventDefault();
+      cancelAnimationFrame(rafId);
+    };
+
+    const onContextRestored = () => {
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+      renderer.setClearColor(0x000000, 0);
+      animate();
+    };
+
+    const onVisibilityChange = () => {
+      if (document.hidden) {
+        cancelAnimationFrame(rafId);
+      } else {
+        animate();
+      }
+    };
+
+    canvas.addEventListener("webglcontextlost", onContextLost);
+    canvas.addEventListener("webglcontextrestored", onContextRestored);
+    document.addEventListener("visibilitychange", onVisibilityChange);
     window.addEventListener("mousemove", onMouseMove, { passive: true });
     window.addEventListener("resize", onResize);
 
     return () => {
+      canvas.removeEventListener("webglcontextlost", onContextLost);
+      canvas.removeEventListener("webglcontextrestored", onContextRestored);
+      document.removeEventListener("visibilitychange", onVisibilityChange);
       window.removeEventListener("mousemove", onMouseMove);
       window.removeEventListener("resize", onResize);
       cancelAnimationFrame(rafId);
