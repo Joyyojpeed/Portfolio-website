@@ -1,6 +1,5 @@
-import React, { useState } from "react";
-import { FiGithub, FiExternalLink, FiArrowLeft, FiArrowRight } from "react-icons/fi";
-import { motion } from "framer-motion";
+import { useEffect, useState } from "react";
+import { FiExternalLink, FiGithub } from "react-icons/fi";
 
 const projectData = [
   {
@@ -19,7 +18,8 @@ const projectData = [
     serial: "02",
     category: "Full Stack Project",
     name: "Fooderuu",
-    description: "Food ordering platform with multi-user functionality real-time menu management, payment integration with robust user authentication.",
+    description:
+      "Food ordering platform with multi-user functionality real-time menu management, payment integration with robust user authentication.",
     techStack: "Next.js, React, MongoDB Atlas, Tailwind CSS, AWS, RazorPay Gateway",
     image: "/images/FooderuuImage.png",
     github: "https://github.com/Joyyojpeed/Fooderuu",
@@ -27,120 +27,117 @@ const projectData = [
   },
 ];
 
-const Projects = () => {
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const project = projectData[currentIndex];
+export default function Projects() {
+  const [preview, setPreview] = useState({
+    visible: false,
+    x: 0,
+    y: 0,
+    src: "",
+  });
+  const [previewEnabled, setPreviewEnabled] = useState(false);
 
-  const handlePrev = () => {
-    setCurrentIndex((prev) => (prev === 0 ? projectData.length - 1 : prev - 1));
+  useEffect(() => {
+    setPreviewEnabled(window.matchMedia("(hover: hover) and (pointer: fine)").matches);
+  }, []);
+
+  const handleMouseEnter = (src) => {
+    if (!previewEnabled) {
+      return;
+    }
+
+    setPreview((prev) => ({ ...prev, visible: true, src }));
   };
 
-  const handleNext = () => {
-    setCurrentIndex((prev) => (prev === projectData.length - 1 ? 0 : prev + 1));
+  const handleMouseMove = (event) => {
+    if (!previewEnabled) {
+      return;
+    }
+
+    setPreview((prev) => ({
+      ...prev,
+      x: event.clientX + 28,
+      y: event.clientY - 92,
+    }));
+  };
+
+  const handleMouseLeave = () => {
+    if (!previewEnabled) {
+      return;
+    }
+
+    setPreview((prev) => ({ ...prev, visible: false }));
   };
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 30 }}
-      animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: -30 }}
-      transition={{ 
-        type: "spring", 
-        stiffness: 100, 
-        damping: 20,
-        duration: 0.5
-      }}
-      className="w-full flex justify-center pt-8 px-6 pb-16" // Reduced top padding
-    >
-      <div className="max-w-[1100px] w-full flex flex-col lg:flex-row justify-between gap-6">
-        {/* Left Section - Moved up */}
-        <div className="lg:w-1/2 w-full lg:pr-6 mt-4"> {/* Reduced top margin */}
-          {/* Mobile Navigation Arrows - Moved closer to content */}
-          <div className="lg:hidden flex gap-6 mb-2"> {/* Reduced bottom margin */}
-            <button
-              onClick={handlePrev}
-              className="p-3 bg-gray-200 dark:bg-gray-700 rounded-full hover:bg-gray-300 dark:hover:bg-gray-600 transition"
-            >
-              <FiArrowLeft className="text-xl text-gray-800 dark:text-white" />
-            </button>
-            <button
-              onClick={handleNext}
-              className="p-3 bg-gray-200 dark:bg-gray-700 rounded-full hover:bg-gray-300 dark:hover:bg-gray-600 transition"
-            >
-              <FiArrowRight className="text-xl text-gray-800 dark:text-white" />
-            </button>
-          </div>
-
-          <h1 className="text-8xl lg:text-9xl font-bold text-blue-600 dark:text-blue-300 opacity-40 mb-1"> {/* Reduced bottom margin */}
-            {project.serial}
+    <section className="page-shell">
+      <div className="page-inner">
+        <div className="section-header">
+          <span className="section-number">02</span>
+          <h1 className="section-title">
+            <span className="gridless-zone">Projects</span>
           </h1>
-          <h2 className="text-3xl lg:text-4xl font-semibold mb-2 text-gray-700 dark:text-gray-300"> {/* Reduced bottom margin */}
-            {project.category}
-          </h2>
-          <div className="mb-4"> {/* Reduced bottom margin */}
-            <p className="text-sm lg:text-lg text-gray-600 dark:text-gray-400">
-              {project.description}
-            </p>
-          </div>
-          <div className="mb-4"> {/* Reduced bottom margin */}
-            <span className="text-sm uppercase tracking-widest text-blue-500">
-              {project.techStack}
-            </span>
-          </div>
-          <div className="w-full h-px bg-gray-300 dark:bg-gray-600 mb-3" /> {/* Reduced bottom margin */}
-          <div className="flex gap-4">
-            <a
-              href={project.live}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="p-3 rounded-full bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 transition"
-            >
-              <FiExternalLink className="text-xl text-gray-800 dark:text-white" />
-            </a>
-            <a
-              href={project.github}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="p-3 rounded-full bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 transition"
-            >
-              <FiGithub className="text-xl text-gray-800 dark:text-white" />
-            </a>
-          </div>
+          <div className="section-divider" />
         </div>
 
-        {/* Right Section - Moved up and closer */}
-        <div className="lg:w-1/2 w-full flex flex-col items-center lg:items-end mt-0">
-  <div className="w-[250px] h-[250px] sm:w-[300px] sm:h-[300px] lg:w-[400px] lg:h-[400px] bg-gray-100 dark:bg-gray-800 rounded-xl flex items-center justify-center relative overflow-hidden">
-    {project.image ? (
-      <img 
-        src={project.image} 
-        alt={project.name}
-        className="w-full h-full object-cover"
-      />
-    ) : (
-      <span className="text-gray-400 dark:text-gray-600 text-sm">Project Image</span>
-    )}
-  </div>
-  
-  {/* Desktop Navigation Arrows - Moved up */}
-  <div className="hidden lg:flex gap-4 mt-2">
-    <button
-      onClick={handlePrev}
-      className="p-3 bg-gray-200 dark:bg-gray-700 rounded-full hover:bg-gray-300 dark:hover:bg-gray-600 transition"
-    >
-      <FiArrowLeft className="text-xl text-gray-800 dark:text-white" />
-    </button>
-    <button
-      onClick={handleNext}
-      className="p-3 bg-gray-200 dark:bg-gray-700 rounded-full hover:bg-gray-300 dark:hover:bg-gray-600 transition"
-    >
-      <FiArrowRight className="text-xl text-gray-800 dark:text-white" />
-    </button>
-  </div>
-</div>
-      </div>
-    </motion.div>
-  );
-};
+        <div className="projects-list">
+          {projectData.map((project) => (
+            <article
+              key={project.id}
+              className="project-row snap-card"
+              onMouseEnter={() => handleMouseEnter(project.image)}
+              onMouseMove={handleMouseMove}
+              onMouseLeave={handleMouseLeave}
+            >
+              <div className="project-serial">{project.serial}</div>
 
-export default Projects;
+              <div>
+                <h2 className="project-name">{project.name}</h2>
+                <div className="project-category">{project.category}</div>
+                <p className="project-desc">{project.description}</p>
+
+                <div className="project-tags">
+                  {project.techStack.split(",").map((tag) => (
+                    <span className="project-tag" key={`${project.id}-${tag.trim()}`}>
+                      {tag.trim()}
+                    </span>
+                  ))}
+                </div>
+              </div>
+
+              <div className="project-links">
+                <a
+                  className="project-link snap-control"
+                  href={project.live}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={`${project.name} live demo`}
+                >
+                  <FiExternalLink size={17} />
+                </a>
+                <a
+                  className="project-link snap-control"
+                  href={project.github}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={`${project.name} source code`}
+                >
+                  <FiGithub size={17} />
+                </a>
+              </div>
+            </article>
+          ))}
+        </div>
+      </div>
+
+      {previewEnabled && (
+        <div
+          className={`projects-preview${preview.visible ? " show" : ""}`}
+          style={{ left: `${preview.x}px`, top: `${preview.y}px` }}
+          aria-hidden="true"
+        >
+          {preview.src ? <img src={preview.src} alt="Project preview" /> : null}
+        </div>
+      )}
+    </section>
+  );
+}

@@ -3,12 +3,12 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
- "scripts": {
-  "dev": "vite",
-  "build": "vite build && cp -r public/* dist/",
-  "preview": "vite preview",
-  "vercel-build": "vite build && cp -r public/* dist/"
-},
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build && cp -r public/* dist/",
+    "preview": "vite preview",
+    "vercel-build": "vite build && cp -r public/* dist/"
+  },
   "dependencies": {
     "aos": "^2.3.4",
     "framer-motion": "^12.7.3",
@@ -17,7 +17,8 @@
     "react-dom": "^19.0.0",
     "react-feather": "^2.0.10",
     "react-icons": "^5.5.0",
-    "react-router-dom": "^7.5.0"
+    "react-router-dom": "^7.5.0",
+    "three": "^0.160.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.22.0",

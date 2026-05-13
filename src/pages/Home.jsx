@@ -1,295 +1,224 @@
+import { useEffect, useMemo, useState } from "react";
 import { motion } from "framer-motion";
-import { useEffect, useState } from "react";
-import { GitHub, Instagram } from "react-feather";
-import { Linkedin as LinkedIn } from "react-feather";
+import { GitHub, Instagram, Linkedin } from "react-feather";
+import { Link } from "react-router-dom";
+
+const experienceData = [
+  { value: 1, label: "Years of Experience" },
+  { value: 10, label: "Projects Completed" },
+  { value: 3, label: "Tech Stacks" },
+  { value: 30, label: "Cups of Coffee" },
+];
+
+const orbitTech = ["Angular", "React", "Next.js", "TypeScript", "Node.js"];
+
+const marqueeTech = [
+  "Angular",
+  "React",
+  "Next.js",
+  "TypeScript",
+  "Node.js",
+  "Express",
+  "Python",
+  "Flask",
+  "MySQL",
+  "MongoDB",
+  "Git",
+  "GitHub",
+  "REST APIs",
+];
 
 export default function Home() {
-  const [loading, setLoading] = useState(true);
-  const experienceData = [
-    { value: 1, label: "years of experience" },
-    { value: 10, label: "projects completed" },
-    { value: 3, label: "tech stacks" },
-    { value: 30, label: "cups of coffee" },
-  ];
   const [counts, setCounts] = useState(experienceData.map(() => 0));
-
-  const [displayedName, setDisplayedName] = useState("");
-  const fullName = "Joydeep Sen.";
-  const [currentIndex, setCurrentIndex] = useState(0);
+  const [cursorVisible, setCursorVisible] = useState(true);
+  const [currentWordIndex, setCurrentWordIndex] = useState(0);
+  const [currentCharIndex, setCurrentCharIndex] = useState(0);
   const [isDeleting, setIsDeleting] = useState(false);
-  const [showCursor, setShowCursor] = useState(true);
-  const typingSpeed = isDeleting ? 75 : 150;
+
+  const typeWords = ["Joydeep Sen.", "a Fullstack Dev.", "a Thinker.", "a Problem Solver.", "a Builder."];
+  const activeWord = typeWords[currentWordIndex];
+  const displayedText = activeWord.slice(0, currentCharIndex);
 
   useEffect(() => {
-    const blinkInterval = setInterval(() => {
-      setShowCursor(prev => !prev);
+    const blinkTimer = window.setInterval(() => {
+      setCursorVisible((prev) => !prev);
     }, 500);
-    return () => clearInterval(blinkInterval);
+
+    return () => window.clearInterval(blinkTimer);
   }, []);
 
   useEffect(() => {
-    let timeout;
+    const speed = isDeleting ? 52 : 96;
+    let timeoutId;
 
-    if (!isDeleting && currentIndex < fullName.length) {
-      timeout = setTimeout(() => {
-        setDisplayedName(prev => prev + fullName[currentIndex]);
-        setCurrentIndex(prev => prev + 1);
-      }, typingSpeed);
-    } else if (isDeleting && currentIndex > 0) {
-      timeout = setTimeout(() => {
-        setDisplayedName(prev => prev.slice(0, -1));
-        setCurrentIndex(prev => prev - 1);
-      }, typingSpeed);
-    } else if (currentIndex === fullName.length) {
-      timeout = setTimeout(() => setIsDeleting(true), 1500);
-    } else if (currentIndex === 0) {
-      timeout = setTimeout(() => setIsDeleting(false), 1000);
+    if (!isDeleting && currentCharIndex < activeWord.length) {
+      timeoutId = window.setTimeout(() => {
+        setCurrentCharIndex((prev) => prev + 1);
+      }, speed);
+    } else if (isDeleting && currentCharIndex > 0) {
+      timeoutId = window.setTimeout(() => {
+        setCurrentCharIndex((prev) => prev - 1);
+      }, speed);
+    } else if (!isDeleting && currentCharIndex === activeWord.length) {
+      timeoutId = window.setTimeout(() => setIsDeleting(true), 1400);
+    } else if (isDeleting && currentCharIndex === 0) {
+      timeoutId = window.setTimeout(() => {
+        setIsDeleting(false);
+        setCurrentWordIndex((prev) => (prev + 1) % typeWords.length);
+      }, 360);
     }
 
-    return () => clearTimeout(timeout);
-  }, [currentIndex, isDeleting, typingSpeed]);
+    return () => window.clearTimeout(timeoutId);
+  }, [activeWord.length, currentCharIndex, isDeleting, typeWords.length]);
 
   useEffect(() => {
-    const calculateDuration = (value) => {
-      return 2000 + (6000 - 2000) * (value / 100);
-    };
-
-    const durations = experienceData.map(item => calculateDuration(item.value));
-    const maxDuration = Math.max(...durations);
-    const startTime = Date.now();
     let animationFrame;
+    let startTime;
+    const duration = 2200;
 
-    const animateCounters = () => {
-      const elapsed = Date.now() - startTime;
+    const animate = (timestamp) => {
+      if (!startTime) {
+        startTime = timestamp;
+      }
 
-      setCounts(prevCounts => {
-        return prevCounts.map((_, index) => {
-          const item = experienceData[index];
-          const duration = calculateDuration(item.value);
-          const progress = Math.min(elapsed / duration, 1);
-          return Math.floor(progress * item.value);
-        });
-      });
+      const progress = Math.min((timestamp - startTime) / duration, 1);
+      const eased = 1 - (1 - progress) ** 3;
 
-      if (elapsed < maxDuration) {
-        animationFrame = requestAnimationFrame(animateCounters);
-      } else {
-        setLoading(false);
+      setCounts(experienceData.map((item) => Math.floor(item.value * eased)));
+
+      if (progress < 1) {
+        animationFrame = window.requestAnimationFrame(animate);
       }
     };
 
-    animationFrame = requestAnimationFrame(animateCounters);
-    return () => cancelAnimationFrame(animationFrame);
+    animationFrame = window.requestAnimationFrame(animate);
+
+    return () => window.cancelAnimationFrame(animationFrame);
   }, []);
 
   const downloadCV = () => {
-    const link = document.createElement('a');
-    link.href = '/ResumeJoydeep1.pdf';
-    link.download = 'Joydeep_Sen_CV.pdf';
+    const link = document.createElement("a");
+    link.href = "/ResumeJoydeep1.pdf";
+    link.download = "Joydeep_Sen_CV.pdf";
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
   };
 
+  const repeatedMarquee = useMemo(() => [...marqueeTech, ...marqueeTech], []);
+
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 30 }}
-      animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: -30 }}
-      transition={{ type: "spring", stiffness: 100, damping: 20, delay: 0.3 }}
-      className="min-h-screen px-10 pt-2 pb-6 bg-white dark:bg-gray-900 text-black dark:text-white flex flex-col items-center"
-    >
-      <div className="flex flex-col-reverse lg:flex-row items-center justify-between w-full max-w-7xl gap-2 mt-2">
-        {/* Left Section */}
-        <div className="lg:w-1/2 text-center lg:text-left">
-          <motion.h1
-            className="text-4xl mb-1 sm:text-5xl lg:text-6xl font-extrabold text-blue-800 dark:text-blue-600"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.8 }}
-          >
-            Hello, I'm
-          </motion.h1>
+    <section className="page-shell">
+      <div className="page-inner">
+        <div className="home-layout">
+          <motion.div initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.45 }}>
+            <h1 className="hero-title">
+              <span className="gridless-zone">Hello, I&apos;m</span>
+            </h1>
+            <div className="hero-name-shell">
+              <h2 className="hero-name">
+                <span className="gridless-zone">
+                  <span className={cursorVisible ? "type-caret" : ""}>{displayedText || "\u00A0"}</span>
+                </span>
+              </h2>
+            </div>
 
-          {/* Typewriter Effect Wrapper with Fixed Height on Mobile */}
-          <div className="relative inline-block h-[72px] sm:h-auto">
-            <motion.h2
-              className="text-5xl sm:text-6xl lg:text-7xl font-extrabold text-blue-600 dark:text-blue-400 mt-1 inline-flex items-center"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 1, delay: 0.2 }}
-            >
-              {displayedName}
-              <span
-                className={`inline-block ml-1 h-12 sm:h-14 lg:h-16 w-1 bg-blue-600 dark:bg-blue-400 ${
-                  showCursor ? 'opacity-100' : 'opacity-0'
-                }`}
-                style={{
-                  transition: 'opacity 0.1s ease',
-                  alignSelf: 'center'
-                }}
-              />
-            </motion.h2>
-          </div>
+            <p className="hero-desc">
+              A passionate developer with a keen interest in web technologies. Check out my projects <Link to="/projects">HERE</Link>!
+            </p>
 
-          <motion.p
-            className="mt-12 text-lg sm:text-xl text-gray-600 dark:text-gray-300"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 1.2, delay: 0.3 }}
-          >
-            A passionate developer with a keen interest in web technologies. Check out my projects{' '}
-            <motion.a
-              href="/Projects"
-              className="relative inline-block font-semibold"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              <span className="relative z-10 text-blue-600 dark:text-blue-400">HERE</span>
-              {/* Glow effect */}
-              <motion.span
-                className="absolute inset-0 bg-blue-400 rounded-full blur-md opacity-0"
-                initial={{ scale: 0.8, opacity: 0 }}
-                animate={{
-                  scale: [1, 1.2, 1],
-                  opacity: [0, 0.3, 0],
-                }}
-                transition={{
-                  duration: 2,
-                  repeat: Infinity,
-                  repeatDelay: 1,
-                }}
-              />
-              {/* Hover effects */}
-              <motion.span
-                className="absolute inset-0 bg-blue-100 dark:bg-blue-900 rounded-full opacity-0"
-                whileHover={{ 
-                  scale: 1.2, 
-                  opacity: 0.4,
-                  transition: { duration: 0.3 }
-                }}
-              />
-            </motion.a>
-            !
-          </motion.p>
+            <div className="hero-actions snap-gap-1">
+              <button className="btn-primary snap-control" type="button" onClick={downloadCV}>
+                Download CV
+              </button>
+              <Link className="btn-outline snap-control" to="/projects">
+                View Projects
+              </Link>
+            </div>
 
-          <div className="mt-6 flex flex-col sm:flex-row items-center gap-3">
-            <motion.button
-              onClick={downloadCV}
-              className="px-6 py-3 text-blue-600 dark:text-blue-400 bg-white dark:bg-gray-900 border-2 border-blue-600 dark:border-blue-400 rounded-full shadow-lg hover:bg-blue-50 dark:hover:bg-gray-800 transition-colors"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 1.5, delay: 0.5 }}
-            >
-              Download CV
-            </motion.button>
-            <div className="flex space-x-3 items-center">
-              <motion.a
+            <div className="hero-social">
+              <a
+                className="social-link snap-control"
                 href="https://www.linkedin.com/in/joydeep-sen-518a38232/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 transition-colors ml-3"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 1.5, delay: 0.8 }}
+                aria-label="LinkedIn"
               >
-                <LinkedIn size={30} />
-              </motion.a>
-
-              <motion.a
+                <Linkedin size={17} />
+              </a>
+              <a
+                className="social-link snap-control"
                 href="https://github.com/Joyyojpeed"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 transition-colors"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 1.5, delay: 1 }}
+                aria-label="GitHub"
               >
-                <GitHub size={30} />
-              </motion.a>
-
-              <motion.a
+                <GitHub size={17} />
+              </a>
+              <a
+                className="social-link snap-control"
                 href="https://www.instagram.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 transition-colors"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 1.5, delay: 1.2 }}
+                aria-label="Instagram"
               >
-                <Instagram size={30} />
-              </motion.a>
+                <Instagram size={17} />
+              </a>
             </div>
-          </div>
-        </div>
+          </motion.div>
 
-        {/* Right Section */}
-        <div className="lg:w-1/2 flex justify-center items-start">
           <motion.div
-            className="relative rounded-full w-[90%] sm:w-[80%] max-w-xs aspect-square overflow-hidden shadow-2xl"
-            initial={{ opacity: 0, y: 50, rotate: -5 }}
-            animate={{
-              opacity: 1,
-              y: 0,
-              rotate: 0,
-              boxShadow: "0 25px 50px -12px rgba(0, 0, 255, 0.25)"
-            }}
-            transition={{
-              duration: 1.5,
-              delay: 0.8,
-              rotate: {
-                type: "spring",
-                stiffness: 50,
-                damping: 10
-              }
-            }}
+            initial={{ opacity: 0, y: 14 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.45, delay: 0.12 }}
           >
-            <motion.img
-              src="/images/Profile.jpg"
-              alt="Your Photo"
-              className="w-full h-full object-cover"
-              initial={{ scale: 1.1 }}
-              animate={{ scale: 1 }}
-              transition={{ duration: 1.5, delay: 0.8 }}
-            />
-            <motion.div
-              className="absolute inset-0 rounded-full border-4 border-blue-400 opacity-0"
-              animate={{
-                opacity: [0, 0.3, 0],
-                scale: [1, 1.05, 1.1]
-              }}
-              transition={{
-                duration: 3,
-                repeat: Infinity,
-                repeatDelay: 2,
-                delay: 1.5
-              }}
-            />
+            <div className="profile-shell">
+              <div className="profile-ring" />
+              <img className="profile-image" src="/images/Profile.jpg" alt="Joydeep Sen" />
+
+              <div className="profile-badge">
+                <span className="profile-badge-dot" />
+                Freelance: Available
+              </div>
+
+              <span className="tech-item" style={{ top: "-14px", left: "50%", transform: "translateX(-50%)" }}>
+                {orbitTech[0]}
+              </span>
+              <span className="tech-item" style={{ top: "30%", right: "-35px" }}>
+                {orbitTech[1]}
+              </span>
+              <span className="tech-item" style={{ right: "-24px", bottom: "65px" }}>
+                {orbitTech[2]}
+              </span>
+              <span className="tech-item" style={{ left: "-40px", top: "42%" }}>
+                {orbitTech[3]}
+              </span>
+              <span className="tech-item" style={{ left: "14px", bottom: "10px" }}>
+                {orbitTech[4]}
+              </span>
+            </div>
           </motion.div>
         </div>
-      </div>
 
-      {/* Experience Section */}
-      <div className="mt-14 w-full max-w-7xl">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+        <div className="stats-grid">
           {experienceData.map((item, index) => (
-            <motion.div
-              key={index}
-              className="flex items-center gap-2 p-3 bg-transparent rounded-xl md:shadow-md min-h-[70px] md:bg-gray-100 dark:md:bg-gray-800"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 1, delay: 1.5 + index * 0.2 }}
-            >
-              <div className="text-4xl font-bold text-blue-700 dark:text-blue-500">
-                {Math.floor(counts[index])}+
-              </div>
-              <div className="text-xs text-gray-600 dark:text-gray-300">
-                {item.label}
-              </div>
-            </motion.div>
+            <div className="stat-card snap-card" key={item.label}>
+              <div className="stat-number">{counts[index]}+</div>
+              <div className="stat-label">{item.label}</div>
+            </div>
           ))}
         </div>
+
+        <div className="marquee-wrap" aria-hidden="true">
+          <div className="marquee-track">
+            {repeatedMarquee.map((item, index) => (
+              <span className="marquee-item" key={`${item}-${index}`}>
+                {item}
+              </span>
+            ))}
+          </div>
+        </div>
       </div>
-    </motion.div>
+    </section>
   );
 }
